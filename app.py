@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 import os
 from rembg import remove
 from PIL import Image
-import io
+
+# ตั้งค่าตัวแปร environment variable สำหรับ API key
+api_key = os.environ.get("REMOVEBG_API_KEY")
 
 app = Flask(__name__)
 
@@ -67,8 +69,5 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.makedirs(UPLOAD_FOLDER)
-    if not os.path.exists(STATIC_FOLDER):
-        os.makedirs(STATIC_FOLDER)
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # ใช้พอร์ตที่ Render กำหนด
+    app.run(host='0.0.0.0', port=port)
